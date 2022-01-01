@@ -8,11 +8,11 @@ public class Curve
   public float Length { get; set; }
   public float Strength { get; set; }
 
-  public Curve(float minLength, float maxLength, float minStrength, float maxStrength)
+  public Curve(CurveSettings curveSettings)
   {
     Positive = Random.value <= 0.5f;
-    Length = Random.Range(minLength, maxLength);
-    Strength = Random.Range(minStrength, maxStrength);
+    Length = Random.Range(curveSettings.MinLength, curveSettings.MaxLength);
+    Strength = Random.Range(curveSettings.MinStrength, curveSettings.MaxStrength);
   }
 
   public bool DoCurvature(float segmentLength)

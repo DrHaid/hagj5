@@ -21,8 +21,8 @@ public class RoadSegment
     vertices.Add((prevSegment == null) ? Vector3.zero : prevSegment.vertices[2]);
     vertices.Add((prevSegment == null) ? Vector3.zero : prevSegment.vertices[3]);
 
-    this.direction = direction;
-    position = (prevSegment == null ? Vector3.zero : prevSegment.position) + this.direction.normalized * length;
+    this.direction = direction.normalized;
+    position = (prevSegment == null ? Vector3.zero : prevSegment.position) + this.direction * length;
     var left = Vector3.Cross(this.direction, Vector3.up);
     var a = position + left.normalized * (width / 2);
     var b = position - left.normalized * (width / 2);

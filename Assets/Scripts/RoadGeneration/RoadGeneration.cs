@@ -9,22 +9,13 @@ public class RoadGeneration : MonoBehaviour
   public float roadWidth = 0.5f;
   public float segmentLength = 0.1f;
   public List<RoadSegment> roadSegments;
-  public MeshFilter roadMeshFilter;
-  
-  public float curveChance;
-  public float curveMinStrength;
-  public float curveMaxStrength;
-  public int curveMinLength;
-  public int curveMaxLength;
-  
-  public float slopeChance;
-  public float slopeMinStrength;
-  public float slopeMaxStrength;
-  public int slopeMinLength;
-  public int slopeMaxLength;
-               
-  private Curve currentSlope;
+  [HideInInspector] public MeshFilter roadMeshFilter;
+
+  public CurveSettings curveSettings;
+  public SlopeSettings slopeSettings;
+
   private Curve currentCurve;
+  private Slope currentSlope;
 
   void Start()
   {
@@ -61,11 +52,12 @@ public class RoadGeneration : MonoBehaviour
     {
       if (i == 0)
       {
-        roadSegments.Add(new RoadSegment(null, Vector3.forward, 0.5f, 0.1f));
+        roadSegments.Add(new RoadSegment(null, Vector3.forward, roadWidth, segmentLength));
         continue;
       }
       var prevSeg = roadSegments[i - 1];
-      roadSegments.Add(new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction), 0.5f, 0.1f));
+      
+      roadSegments.Add(new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction), roadWidth, segmentLength));
     }
   }
 
@@ -105,20 +97,63 @@ public class RoadGeneration : MonoBehaviour
 
   public Vector3 ApplyCurvature(Vector3 direction)
   {
-    if (Random.value <= curveChance)
+    // choose either curve or slope
+    if (currentCurve == null && currentSlope == null)
     {
-      currentCurve = new Curve(curveMinLength, curveMaxLength, curveMinStrength, curveMaxStrength);
+      if (Random.value <= curveSettings.Chance)
+      {
+        currentCurve = new Curve(curveSettings);
+      }
+      else if (Random.value <= slopeSettings.Chance)
+      {
+        currentSlope = new Slope(slopeSettings);
+      }
     }
 
     if (currentCurve != null)
     {
       direction = Quaternion.AngleAxis((currentCurve.Positive ? 1 : -1) * currentCurve.Strength, Vector3.up) * direction;
-      currentCurve.DoCurvature(segmentLength);
-      if(currentCurve.Length <= 0)
+      if (!currentCurve.DoCurvature(segmentLength))
       {
         currentCurve = null;
       }
     }
+
+    if (currentSlope != null)
+    {
+      var left = Vector3.Cross(direction, Vector3.up);
+      // HACK: road leveling out isn't guaranteed.
+      if (currentSlope.Length > currentSlope.OriginalLength / 2f)
+      {
+        // smooth lerp towards steepest part
+        direction.y = 0;
+        direction = Quaternion.AngleAxis(
+          Mathf.SmoothStep(currentSlope.SlopeValue * 2, 0, currentSlope.Length / currentSlope.OriginalLength), 
+          left) * direction;
+      }
+      else
+      {
+        // smooth lerp back towards zero
+        direction.y = 0;
+        direction = Quaternion.AngleAxis(
+          InvertedSmoothStep(currentSlope.SlopeValue, 0, currentSlope.Length / (currentSlope.OriginalLength / 2)),
+          left) * direction;
+      }
+
+      if (!currentSlope.DoSlope(segmentLength))
+      {
+        currentSlope = null;
+      }
+    }
+    
     return direction;
   }
+
+  public static float InvertedSmoothStep(float from, float to, float t)
+  {
+    t = Mathf.Clamp01(t);
+    t = -2.0F * t * t * t + 3.0F * t * t;
+    return to * t + from * t;
+  }
+
 }

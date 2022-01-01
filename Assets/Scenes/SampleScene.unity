@@ -159,16 +159,8 @@ MonoBehaviour:
   roadWidth: 0.5
   segmentLength: 0.1
   roadMeshFilter: {fileID: 0}
-  curveChance: 0.005
-  curveMinStrength: 0.1
-  curveMaxStrength: 0.5
-  curveMinLength: 5
-  curveMaxLength: 30
-  slopeChance: 0
-  slopeMinStrength: 0
-  slopeMaxStrength: 0
-  slopeMinLength: 0
-  slopeMaxLength: 0
+  curveSettings: {fileID: 11400000, guid: f64b6e677e7ddc34bba87288e4020183, type: 2}
+  slopeSettings: {fileID: 11400000, guid: 8f512881070f7cd43a81b492a596925e, type: 2}
 --- !u!4 &352945323
 Transform:
   m_ObjectHideFlags: 0
