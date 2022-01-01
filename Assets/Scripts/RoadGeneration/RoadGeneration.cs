@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RoadGeneration : MonoBehaviour
 {
+  public static RoadGeneration instance;
+
   public int segmentIndex = 0;
   public int segmentCount = 20;
   public float roadWidth = 0.5f;
@@ -16,6 +18,11 @@ public class RoadGeneration : MonoBehaviour
 
   private Curve currentCurve;
   private Slope currentSlope;
+
+  private void Awake()
+  {
+    instance = this;
+  }
 
   void Start()
   {

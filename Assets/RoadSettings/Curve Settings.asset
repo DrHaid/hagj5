@@ -15,5 +15,5 @@ MonoBehaviour:
   Chance: 0.02
   MinStrength: 0.03
   MaxStrength: 0.4
-  MinLength: 10
-  MaxLength: 20
+  MinLength: 20
+  MaxLength: 30
