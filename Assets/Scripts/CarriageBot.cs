@@ -19,11 +19,22 @@ public class CarriageBot : MonoBehaviour
 
   void Update()
   {
-    LanePosition = CarController.ClampLanePosition(LanePosition, gameObject.transform.localScale.x);
+    if (changingLane)
+    {
+      LanePosition = Mathf.SmoothStep(oldLanePosition, newLanePosition, changingProgress);
+      changingProgress += Time.deltaTime / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.7f;
+
+      if (changingProgress >= 1f)
+      {
+        changingLane = false;
+        LanePosition = newLanePosition;
+      }
+    }
     State = CarController.SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
     if(State == CarriageBotState.OUTRUN)
     {
-      Destroy(gameObject);
+      // wait for destruction by CarriageManager
+      return;
     }
     if(State != CarriageBotState.AHEAD)
     {
@@ -35,7 +46,24 @@ public class CarriageBot : MonoBehaviour
   {
     Speed = speed;
     Progress = RoadGeneration.instance.roadSegments.Count * RoadGeneration.instance.segmentLength;
-    var posFromLeft = startingLane * RoadGeneration.instance.laneWidth + (RoadGeneration.instance.laneWidth / 2);
-    LanePosition = -((RoadGeneration.instance.laneWidth * RoadGeneration.instance.laneCount) / 2) + posFromLeft;
+    LanePosition = GetLanePosition(startingLane);
+  }
+
+  private float GetLanePosition(int laneIndex)
+  {
+    var posFromLeft = laneIndex * RoadGeneration.instance.laneWidth + (RoadGeneration.instance.laneWidth / 2);
+    return -((RoadGeneration.instance.laneWidth * RoadGeneration.instance.laneCount) / 2) + posFromLeft;
+  }
+
+  private bool changingLane = false;
+  private float oldLanePosition;
+  private float newLanePosition;
+  private float changingProgress = 0f;
+  public void ChangeLane(int newLaneIndex)
+  {
+    changingLane = true;
+    oldLanePosition = LanePosition;
+    newLanePosition = GetLanePosition(newLaneIndex);
+    changingProgress = 0f;
   }
 }

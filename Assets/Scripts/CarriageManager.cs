@@ -1,31 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CarriageManager : MonoBehaviour
 {
-  public GameObject carriagePrefab;
-  public List<CarriageBot> carriages;
+  public GameObject CarriagePrefab;
+  public float MaxSpeed;
+  public float MinSpeed;
+  public List<CarriageBot> CarriageBots;
 
   void Start()
   {
-    carriages = new List<CarriageBot>();
+    CarriageBots = new List<CarriageBot>();
   }
 
   void Update()
   {
+    CarriageCleanup();
+
     if(Input.GetKeyDown(KeyCode.Space))
     {
       SpawnCarriage();
     }
+    if (Input.GetKeyDown(KeyCode.C))
+    {
+      CarriageBots[0].ChangeLane(0);
+    }
+  }
+
+  private void CarriageCleanup()
+  {
+    CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => x.State == CarriageBot.CarriageBotState.OUTRUN);
+    Destroy(botToDelete);
+    CarriageBots.Remove(botToDelete); 
   }
 
   [ContextMenu("Spawn Carriage")]
   public void SpawnCarriage()
   {
-    var carriage = Instantiate(carriagePrefab);
+    var carriage = Instantiate(CarriagePrefab);
     var bot = carriage.GetComponent<CarriageBot>();
-    bot.InitBot(2f, Random.Range(0, RoadGeneration.instance.laneCount));
-    carriages.Add(bot);
+    bot.InitBot(Random.Range(MinSpeed, MaxSpeed), Random.Range(0, RoadGeneration.instance.laneCount));
+    CarriageBots.Add(bot);
   }
 }

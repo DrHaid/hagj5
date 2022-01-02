@@ -828,5 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50022ad5a8422db4b8dd38f898f60850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carriagePrefab: {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
-  carriages: []
+  CarriagePrefab: {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
+  MaxSpeed: 3
+  MinSpeed: 6
+  CarriageBots: []
