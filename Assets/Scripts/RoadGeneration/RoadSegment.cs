@@ -9,7 +9,7 @@ public class RoadSegment
   public List<Vector3> vertices { get; set; }
   public List<int> triangles { get; set; }
 
-  public RoadSegment(RoadSegment prevSegment, Vector3 direction,  float width, float length)
+  public RoadSegment(RoadSegment prevSegment, Vector3 direction, float width, float length)
   {
     triangles = new List<int>
     {

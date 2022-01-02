@@ -8,7 +8,8 @@ public class RoadGeneration : MonoBehaviour
 
   public int segmentIndex = 0;
   public int segmentCount = 20;
-  public float roadWidth = 0.5f;
+  public int laneCount = 3;
+  public float laneWidth = 0.5f;
   public float segmentLength = 0.1f;
   public List<RoadSegment> roadSegments;
   [HideInInspector] public MeshFilter roadMeshFilter;
@@ -59,12 +60,12 @@ public class RoadGeneration : MonoBehaviour
     {
       if (i == 0)
       {
-        roadSegments.Add(new RoadSegment(null, Vector3.forward, roadWidth, segmentLength));
+        roadSegments.Add(new RoadSegment(null, Vector3.forward, laneWidth * laneCount, segmentLength));
         continue;
       }
       var prevSeg = roadSegments[i - 1];
       
-      roadSegments.Add(new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction), roadWidth, segmentLength));
+      roadSegments.Add(new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction), laneWidth * laneCount, segmentLength));
     }
   }
 
@@ -87,19 +88,36 @@ public class RoadGeneration : MonoBehaviour
     }
     roadMesh.vertices = vertices.ToArray();
     roadMesh.triangles = triangles.ToArray();
-    roadMesh.uv = GetUvs(roadMesh.vertices);
+    roadMesh.uv = GetUvs(roadSegments, index, count);
     roadMesh.RecalculateNormals();
     return roadMesh;
   }
 
-  public Vector2[] GetUvs(Vector3[] vertices)
+  //public Vector2[] GetUvs(Vector3[] vertices)
+  //{
+  //  Vector2[] uvs = new Vector2[vertices.Length];
+  //  for (int i = 0; i < uvs.Length; i++)
+  //  {
+  //    uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
+  //  }
+  //  return uvs;
+  //}
+
+  public Vector2[] GetUvs(List<RoadSegment> roadSegments, int index, int count)
   {
-    Vector2[] uvs = new Vector2[vertices.Length];
-    for (int i = 0; i < uvs.Length; i++)
+    var uvs = new List<Vector2>();
+    for (int i = index; i < index + count; i++)
     {
-      uvs[i] = new Vector2(vertices[i].x, vertices[i].y);
+      var uv = (Vector3.forward * i * segmentLength) + Vector3.left * ((laneWidth * laneCount) / 2);
+      uvs.Add(new Vector2(uv.x, uv.z));
+      uv = (Vector3.forward * i * segmentLength) - Vector3.left * ((laneWidth * laneCount) / 2);
+      uvs.Add(new Vector2(uv.x, uv.z));
+      uv = (Vector3.forward * (i + 1) * segmentLength) + Vector3.left * ((laneWidth * laneCount) / 2);
+      uvs.Add(new Vector2(uv.x, uv.z));
+      uv = (Vector3.forward * (i + 1) * segmentLength) - Vector3.left * ((laneWidth * laneCount) / 2);
+      uvs.Add(new Vector2(uv.x, uv.z));
     }
-    return uvs;
+    return uvs.ToArray();
   }
 
   public Vector3 ApplyCurvature(Vector3 direction)
