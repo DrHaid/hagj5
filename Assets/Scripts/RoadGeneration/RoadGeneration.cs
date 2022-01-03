@@ -88,22 +88,12 @@ public class RoadGeneration : MonoBehaviour
     }
     roadMesh.vertices = vertices.ToArray();
     roadMesh.triangles = triangles.ToArray();
-    roadMesh.uv = GetUvs(roadSegments, index, count);
+    roadMesh.uv = GetUvs(index, count);
     roadMesh.RecalculateNormals();
     return roadMesh;
   }
 
-  //public Vector2[] GetUvs(Vector3[] vertices)
-  //{
-  //  Vector2[] uvs = new Vector2[vertices.Length];
-  //  for (int i = 0; i < uvs.Length; i++)
-  //  {
-  //    uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
-  //  }
-  //  return uvs;
-  //}
-
-  public Vector2[] GetUvs(List<RoadSegment> roadSegments, int index, int count)
+  public Vector2[] GetUvs(int index, int count)
   {
     var uvs = new List<Vector2>();
     for (int i = index; i < index + count; i++)

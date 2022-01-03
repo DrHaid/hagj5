@@ -8,10 +8,10 @@ public class EnvironmentSettings : ScriptableObject
   public string Name;
   public EnvironmentType Type;
   public bool Exclusive;
-  public float Frequency;
-  public float MinLength;
-  public float MaxLength;
-  public float GapSize;
+  public int Weight;
+  public int MinRange;
+  public int MaxRange;
+  public int GapSize;
   public List<GameObject> Prefabs;
 }
 
