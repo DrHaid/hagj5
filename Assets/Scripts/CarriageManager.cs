@@ -10,6 +10,13 @@ public class CarriageManager : MonoBehaviour
   public float MinSpeed;
   public List<CarriageBot> CarriageBots;
 
+  public static CarriageManager instance;
+
+  private void Awake()
+  {
+    instance = this;
+  }
+
   void Start()
   {
     CarriageBots = new List<CarriageBot>();

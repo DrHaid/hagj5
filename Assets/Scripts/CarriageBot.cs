@@ -7,6 +7,7 @@ public class CarriageBot : MonoBehaviour
   public float Progress;
   public float LanePosition;
   public float Speed;
+  public bool SlowToStop;
 
   public CarriageBotState State;
 
@@ -29,7 +30,20 @@ public class CarriageBot : MonoBehaviour
         changingLane = false;
         LanePosition = newLanePosition;
       }
+      if (GetCurrentLaneIndex() < 0 || GetCurrentLaneIndex() > RoadGeneration.instance.laneCount - 1)
+      {
+        SlowToStop = true;
+      }
     }
+    if (SlowToStop)
+    {
+      Speed = Mathf.Clamp(Speed - Time.deltaTime, 0, float.MaxValue);
+      if (Speed == 0)
+      {
+        SlowToStop = false;
+      }
+    }
+
     State = CarController.SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
     if(State == CarriageBotState.OUTRUN)
     {
@@ -53,6 +67,12 @@ public class CarriageBot : MonoBehaviour
   {
     var posFromLeft = laneIndex * RoadGeneration.instance.laneWidth + (RoadGeneration.instance.laneWidth / 2);
     return -((RoadGeneration.instance.laneWidth * RoadGeneration.instance.laneCount) / 2) + posFromLeft;
+  }
+
+  public int GetCurrentLaneIndex()
+  {
+    var rightShift = ((RoadGeneration.instance.laneWidth * RoadGeneration.instance.laneCount) / 2);
+    return (int)((LanePosition + rightShift) / RoadGeneration.instance.laneWidth);
   }
 
   private bool changingLane = false;

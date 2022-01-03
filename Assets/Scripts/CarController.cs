@@ -38,6 +38,19 @@ public class CarController : MonoBehaviour
     RoadGeneration.instance.segmentIndex = index >= 0 ? index : 0;
   }
 
+  private void OnTriggerEnter(Collider other)
+  {
+    var bot = other.transform.GetComponent<CarriageBot>();
+    HandleCollision(bot);
+  }
+
+  private void HandleCollision(CarriageBot bot)
+  {
+    Speed = bot.Speed - 2f;
+    var collisionFromLeft = LanePosition < bot.LanePosition;
+    bot.ChangeLane(bot.GetCurrentLaneIndex() + (collisionFromLeft ? 1 : -1));
+  }
+
   public static CarriageBot.CarriageBotState SetTransformFromProgress(Transform car, float progress, float lanePosition)
   {
     var segmentLength = RoadGeneration.instance.segmentLength;
