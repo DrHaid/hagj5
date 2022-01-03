@@ -9,9 +9,9 @@ public class CarriageBot : MonoBehaviour
   public float Speed;
   public bool SlowToStop;
 
-  public CarriageBotState State;
+  public ProgressState State;
 
-  public enum CarriageBotState
+  public enum ProgressState
   {
     AHEAD,
     LEVEL,
@@ -45,12 +45,12 @@ public class CarriageBot : MonoBehaviour
     }
 
     State = CarController.SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
-    if(State == CarriageBotState.OUTRUN)
+    if(State == ProgressState.OUTRUN)
     {
       // wait for destruction by CarriageManager
       return;
     }
-    if(State != CarriageBotState.AHEAD)
+    if(State != ProgressState.AHEAD)
     {
       Progress += Time.deltaTime * Speed;
     }

@@ -51,24 +51,24 @@ public class CarController : MonoBehaviour
     bot.ChangeLane(bot.GetCurrentLaneIndex() + (collisionFromLeft ? 1 : -1));
   }
 
-  public static CarriageBot.CarriageBotState SetTransformFromProgress(Transform car, float progress, float lanePosition)
+  public static CarriageBot.ProgressState SetTransformFromProgress(Transform car, float progress, float lanePosition)
   {
     var segmentLength = RoadGeneration.instance.segmentLength;
     var currentSegment = (int)(progress / segmentLength);
     if (currentSegment < RoadGeneration.instance.segmentIndex)
     {
-      return CarriageBot.CarriageBotState.OUTRUN;
+      return CarriageBot.ProgressState.OUTRUN;
     }
     if (currentSegment > RoadGeneration.instance.roadSegments.Count - 1)
     {
-      return CarriageBot.CarriageBotState.AHEAD;
+      return CarriageBot.ProgressState.AHEAD;
     }
     var localProgress = progress % segmentLength;
     var prevPos = RoadGeneration.instance.roadSegments[currentSegment - 1].position;
     car.position = prevPos + RoadGeneration.instance.roadSegments[currentSegment].direction * localProgress;
     car.rotation = Quaternion.LookRotation(RoadGeneration.instance.roadSegments[currentSegment].direction, Vector3.up);
     car.position = car.position + car.right * lanePosition;
-    return CarriageBot.CarriageBotState.LEVEL;
+    return CarriageBot.ProgressState.LEVEL;
   }
 
   public static float ClampLanePosition(float lanePosition, float carWidth)

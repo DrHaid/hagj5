@@ -38,7 +38,7 @@ public class CarriageManager : MonoBehaviour
 
   private void CarriageCleanup()
   {
-    CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => x.State == CarriageBot.CarriageBotState.OUTRUN);
+    CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => x.State == CarriageBot.ProgressState.OUTRUN);
     Destroy(botToDelete);
     CarriageBots.Remove(botToDelete); 
   }
