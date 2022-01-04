@@ -15,7 +15,7 @@ public class EnvironmentBuilder : MonoBehaviour
 
   void Start()
   {
-    
+
   }
 
   void Update()
@@ -32,14 +32,82 @@ public class EnvironmentBuilder : MonoBehaviour
     // check unckecked roadSegments if environment object should be spawned
     for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i++)
     {
-      // TODO: oh boi
-      /*
-       update all active environments here because range and roadside could still be occupied by something else.
-      once range is free, do the whole "pick environment" routine. 
-      basically do all updating in here, not in Update() because update could happen every other segment.
-       */
+      var finished = new List<EnvironmentInstance>();
+      foreach (var activeEnv in ActiveEnvironments)
+      {
+        activeEnv.Range--;
+        if (activeEnv.Range == 0)
+        {
+          finished.Add(activeEnv);
+        }
+
+        // place repeating object
+        if (activeEnv.Settings.Type == EnvironmentType.REPEATING
+          || activeEnv.Settings.Type == EnvironmentType.WALL)
+        {
+          if (i % activeEnv.Range == 0)
+          {
+            PlaceObject(i, activeEnv, false);
+          }
+        }
+      }
+
+      // clean up environment objects that finished generating
+      foreach (var instance in finished)
+      {
+        ActiveEnvironments.Remove(instance);
+      }
+
+      // choose if environment should be generated
+      if ( UnityEngine.Random.value > EnvironmentFrequency)
+      {
+        return;
+      }
+
+      var freeRoadSide = GetFreeRoadSide();
+      if (freeRoadSide == null)
+      {
+        return;
+      }
+
+      var envObj = new EnvironmentInstance(PickEnvironmentObject(), freeRoadSide);
+      PlaceObject(i, envObj);
+      ActiveEnvironments.Add(envObj);
     }
-    // lastSegmentIndex = RoadGeneration.instance.roadSegments.Count - 1;
+    lastSegmentIndex = RoadGeneration.instance.roadSegments.Count - 1;
+  }
+
+  private bool? GetFreeRoadSide()
+  {
+    bool? roadSide = null;
+    if (ActiveEnvironments.Count == 0)
+      return UnityEngine.Random.value > 0.5f;
+    foreach (var inst in ActiveEnvironments)
+    {
+      if (roadSide == (inst.RoadSideRight && inst.Settings.Exclusive))
+        return null;
+      roadSide = !(inst.RoadSideRight && inst.Settings.Exclusive);
+    }
+    return roadSide;
+  }
+
+  private void PlaceObject(int segmentIndex, EnvironmentInstance inst, bool initalize = true)
+  {
+    var roadSegment = RoadGeneration.instance.roadSegments[segmentIndex];
+    var distToCenter = (RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth) + DistanceFromRoad;
+    var left = Vector3.Cross(roadSegment.direction, Vector3.up);
+    var pos = roadSegment.position + (left * (inst.RoadSideRight ? -1 : 1)) * distToCenter;
+    switch (inst.Settings.Type)
+    {
+      case EnvironmentType.SINGLE:
+        break;
+      case EnvironmentType.REPEATING:
+        break;
+      case EnvironmentType.WALL:
+        break;
+      case EnvironmentType.GROUP:
+        break;
+    }
   }
 
   public EnvironmentSettings PickEnvironmentObject()
@@ -47,10 +115,10 @@ public class EnvironmentBuilder : MonoBehaviour
     List<int> weights = new List<int>();
     int weightTotal = 0;
 
-    foreach (var settings in EnvironmentTemplates)
+    foreach (var template in EnvironmentTemplates)
     {
-      weights.Add(settings.Weight);
-      weightTotal += settings.Weight;
+      weights.Add(template.Weight);
+      weightTotal += template.Weight;
     }
 
     int randVal = UnityEngine.Random.Range(0, weightTotal + 1);
@@ -86,7 +154,7 @@ public class EnvironmentInstance
   private void PlaceObjects()
   {
     Objects = new List<Tuple<Vector3, GameObject>>();
-    foreach(var envObj in Settings.Prefabs)
+    foreach (var envObj in Settings.Prefabs)
     {
       var pos = new Vector3(
           UnityEngine.Random.Range(0, 10 * (RoadSideRight ? 1 : -1)),
