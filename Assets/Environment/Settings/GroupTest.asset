@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: GroupTest
   m_EditorClassIdentifier: 
   Name: 
-  Type: 0
-  Exclusive: 0
-  Frequency: 0
-  MinLength: 0
-  MaxLength: 0
+  Type: 1
+  Exclusive: 1
+  Weight: 1
+  MinRange: 10
+  MaxRange: 30
   GapSize: 0
-  Prefabs: []
+  Prefabs:
+  - {fileID: 1707874644560966988, guid: fbe04f7fe156daa40a985c72e4a389d4, type: 3}
+  - {fileID: 2543774044403891509, guid: 76308617053a05a4dbc5bdc820b8b3b5, type: 3}
+  - {fileID: 6405002034207903188, guid: ba7cb0d7ea9e4bf429101b8ee113ace1, type: 3}
+  - {fileID: 5732629291317970328, guid: 7ffb72b9324ffa14080d3615ae2094dd, type: 3}

@@ -7,6 +7,7 @@ public class EnvironmentBuilder : MonoBehaviour
 {
   public float DistanceFromRoad;
   public float EnvironmentFrequency;
+  public int EnvironmentDeletionBuffer;
 
   public List<EnvironmentSettings> EnvironmentTemplates = new List<EnvironmentSettings>();
   public List<EnvironmentInstance> ActiveEnvironments = new List<EnvironmentInstance>();
@@ -20,15 +21,6 @@ public class EnvironmentBuilder : MonoBehaviour
 
   void Update()
   {
-    //if(ActiveEnvironments.Count == 0)
-    //{
-    //  if(UnityEngine.Random.value < EnvironmentFrequency)
-    //  {
-    //    var setting = PickEnvironmentObject();
-    //    ActiveEnvironments.Add(new EnvironmentInstance(setting));
-    //  }
-    //}
-
     // check unckecked roadSegments if environment object should be spawned
     for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i++)
     {
@@ -38,6 +30,7 @@ public class EnvironmentBuilder : MonoBehaviour
         activeEnv.Range--;
         if (activeEnv.Range == 0)
         {
+          activeEnv.LastSegmentIndex = i;
           finished.Add(activeEnv);
         }
 
@@ -45,7 +38,7 @@ public class EnvironmentBuilder : MonoBehaviour
         if (activeEnv.Settings.Type == EnvironmentType.REPEATING
           || activeEnv.Settings.Type == EnvironmentType.WALL)
         {
-          if (i % activeEnv.Range == 0)
+          if (activeEnv.Range % activeEnv.Settings.GapSize == 0)
           {
             PlaceObject(i, activeEnv, false);
           }
@@ -61,20 +54,20 @@ public class EnvironmentBuilder : MonoBehaviour
       // choose if environment should be generated
       if ( UnityEngine.Random.value > EnvironmentFrequency)
       {
-        return;
+        break;
       }
 
       var freeRoadSide = GetFreeRoadSide();
       if (freeRoadSide == null)
       {
-        return;
+        break;
       }
 
       var envObj = new EnvironmentInstance(PickEnvironmentObject(), freeRoadSide);
       PlaceObject(i, envObj);
       ActiveEnvironments.Add(envObj);
     }
-    lastSegmentIndex = RoadGeneration.instance.roadSegments.Count - 1;
+    lastSegmentIndex = RoadGeneration.instance.roadSegments.Count;
   }
 
   private bool? GetFreeRoadSide()
@@ -91,21 +84,67 @@ public class EnvironmentBuilder : MonoBehaviour
     return roadSide;
   }
 
-  private void PlaceObject(int segmentIndex, EnvironmentInstance inst, bool initalize = true)
+  private void PlaceObject(int segmentIndex, EnvironmentInstance inst, bool initialize = true)
   {
     var roadSegment = RoadGeneration.instance.roadSegments[segmentIndex];
     var distToCenter = (RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth) + DistanceFromRoad;
     var left = Vector3.Cross(roadSegment.direction, Vector3.up);
     var pos = roadSegment.position + (left * (inst.RoadSideRight ? -1 : 1)) * distToCenter;
+    var dir = new Vector3(roadSegment.direction.x, 0f, roadSegment.direction.z);
     switch (inst.Settings.Type)
-    {
+    { 
       case EnvironmentType.SINGLE:
+        if (inst.Settings.Prefabs.Count < 1)
+        {
+          Debug.LogError("No prefabs in EnvironmentTemplate");
+          return;
+        }
+        var single = Instantiate(inst.Settings.Prefabs[0], pos, Quaternion.LookRotation(dir, Vector3.up));
+        single.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
+        single.transform.parent = gameObject.transform;
         break;
+
       case EnvironmentType.REPEATING:
+        if (inst.Settings.Prefabs.Count < 1)
+        {
+          Debug.LogError("No prefabs in EnvironmentTemplate");
+          return;
+        }
+        var repeat = Instantiate(inst.Settings.Prefabs[0], pos, Quaternion.LookRotation(dir, Vector3.up));
+        repeat.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
+        repeat.transform.parent = gameObject.transform;
         break;
+
       case EnvironmentType.WALL:
+        if (inst.Settings.Prefabs.Count < 2)
+        {
+          Debug.LogError("Minimum prefab count (2) not met EnvironmentTemplate");
+          return;
+        }
+        var wall = Instantiate(initialize ? inst.Settings.Prefabs[0] : inst.Settings.Prefabs[1], pos, Quaternion.LookRotation(dir, Vector3.up));
+        wall.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
+        wall.transform.parent = gameObject.transform;
         break;
+
       case EnvironmentType.GROUP:
+        if (inst.Objects.Count < 1)
+        {
+          Debug.LogError("No Objects found in Group");
+          return;
+        }
+
+        // HACK: to get around vector maths
+        var tempParent = new GameObject();
+        tempParent.transform.parent = gameObject.transform;
+        tempParent.transform.position = pos;
+        foreach (var groupObj in inst.Objects)
+        {
+          var o = Instantiate(groupObj.Item2, pos + groupObj.Item1, Quaternion.identity, tempParent.transform);
+          o.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
+        }
+        tempParent.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        tempParent.transform.DetachChildren();
+        Destroy(tempParent);
         break;
     }
   }
@@ -139,6 +178,7 @@ public class EnvironmentInstance
   public bool RoadSideRight;
   public int Range;
   public List<Tuple<Vector3, GameObject>> Objects;
+  public int LastSegmentIndex = -1;
 
   public EnvironmentInstance(EnvironmentSettings settings, bool? roadSideRight = null)
   {

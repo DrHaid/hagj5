@@ -315,7 +315,7 @@ MonoBehaviour:
   segmentCount: 300
   laneCount: 5
   laneWidth: 1
-  segmentLength: 0.1
+  segmentLength: 0.3
   roadMeshFilter: {fileID: 0}
   curveSettings: {fileID: 11400000, guid: f64b6e677e7ddc34bba87288e4020183, type: 2}
   slopeSettings: {fileID: 11400000, guid: 8f512881070f7cd43a81b492a596925e, type: 2}
@@ -766,9 +766,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65a51d705089724d81986b09009cc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DistanceFromRoad: 0
-  EnvironmentFrequency: 0
-  EnvironmentTemplates: []
+  DistanceFromRoad: 0.5
+  EnvironmentFrequency: 0.02
+  EnvironmentDeletionBuffer: 5
+  EnvironmentTemplates:
+  - {fileID: 11400000, guid: 5a77bcb9bfab4a14cb36d119a3949356, type: 2}
+  - {fileID: 11400000, guid: c8c0fe62f4ee9584e903f5b2e3f319c3, type: 2}
+  - {fileID: 11400000, guid: 00c44829d8ad23f42a0ce2bb3836b45b, type: 2}
+  - {fileID: 11400000, guid: c6383c0f7b0780841b73df33ec749327, type: 2}
 --- !u!4 &1209229111
 Transform:
   m_ObjectHideFlags: 0
