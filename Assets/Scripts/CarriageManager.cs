@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CarriageManager : MonoBehaviour
 {
+  public List<Color32> CarriageColors;
   public List<GameObject> CarriagePrefabs;
   public float MaxSpeed;
   public float MinSpeed;
@@ -39,8 +40,11 @@ public class CarriageManager : MonoBehaviour
   private void CarriageCleanup()
   {
     CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => x.State == CarriageBot.ProgressState.OUTRUN);
-    Destroy(botToDelete);
-    CarriageBots.Remove(botToDelete); 
+    if (botToDelete != null)
+    {
+      Destroy(botToDelete.gameObject ?? null);
+      CarriageBots.Remove(botToDelete);
+    }
   }
 
   [ContextMenu("Spawn Carriage")]
@@ -50,6 +54,9 @@ public class CarriageManager : MonoBehaviour
     var carriage = Instantiate(CarriagePrefabs[index]);
     var bot = carriage.GetComponent<CarriageBot>();
     bot.InitBot(Random.Range(MinSpeed, MaxSpeed), Random.Range(0, RoadGeneration.instance.laneCount));
+    var color = Random.Range(0, CarriageColors.Count);
+    carriage.transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color 
+      = CarriageColors[color];
     CarriageBots.Add(bot);
   }
 }

@@ -107,6 +107,9 @@ public class EnvironmentBuilder : MonoBehaviour
           Debug.LogError("No prefabs in EnvironmentTemplate");
           return;
         }
+        // dont place first of repeating object cuz gaps messed up
+        if (initialize) 
+          break;
         var repeat = Instantiate(inst.Settings.Prefabs[0], pos, Quaternion.LookRotation(dir, Vector3.up));
         repeat.transform.localScale = new Vector3((inst.RoadSideRight ? -1 : 1), 1f, 1f);
         repeat.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);

@@ -4,33 +4,63 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-  public float Progress;
-  public float LanePosition;
-  public float Speed;
+  public Animator Animator;
+  public GameObject SmokeParticles;
+  public bool CarBroke = false;
+
+  [HideInInspector] public float Progress;
+  [HideInInspector] public float LanePosition;
+  [HideInInspector] public float Speed;
+
+  private void Start()
+  {
+    AudioController.instance.StartMotor();
+  }
 
   void Update()
   {
-    if (Input.GetKey(KeyCode.UpArrow))
+    if (CarBroke)
     {
-      Speed += 0.01f;
+      Speed = Mathf.Clamp(Speed - 5 * Time.deltaTime, 0, float.MaxValue);
+      SmokeParticles.SetActive(true);
     }
-    if (Input.GetKey(KeyCode.DownArrow))
+
+    if (!CarBroke)
     {
-      Speed = Mathf.Clamp(Speed - 0.02f, 0f, 1000f);
+      if (Input.GetKey(KeyCode.UpArrow))
+      {
+        Speed += 0.01f;
+      }
+      if (Input.GetKey(KeyCode.DownArrow))
+      {
+        Speed = Mathf.Clamp(Speed - 0.02f, 0f, 1000f);
+      }
+      if (Input.GetKey(KeyCode.RightArrow))
+      {
+        LanePosition += 0.2f * Speed * Time.deltaTime;
+      }
+      if (Input.GetKey(KeyCode.LeftArrow))
+      {
+        LanePosition -= 0.2f * Speed * Time.deltaTime;
+      }
     }
-    if (Input.GetKey(KeyCode.RightArrow))
+
+    if (Speed == 0)
     {
-      LanePosition += 0.1f * Speed * Time.deltaTime;
+      Animator.speed = 0;
     }
-    if (Input.GetKey(KeyCode.LeftArrow))
+    else
     {
-      LanePosition -= 0.1f * Speed * Time.deltaTime;
+      Animator.speed = 1;
     }
 
     Progress += Time.deltaTime * Speed;
-    LanePosition = ClampLanePosition(LanePosition, gameObject.transform.localScale.x);
     SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
-    
+    if (IsLanePositionOffroad(LanePosition))
+    {
+      CarBroke = true;
+    }
+
     // set position of RoadGeneration
     var segmentLength = RoadGeneration.instance.segmentLength;
     var currentSegment = (int)(Progress / segmentLength);
@@ -42,6 +72,7 @@ public class CarController : MonoBehaviour
   {
     var bot = other.transform.GetComponent<CarriageBot>();
     HandleCollision(bot);
+    AudioController.instance.PlayCollisionSound();
   }
 
   private void HandleCollision(CarriageBot bot)
@@ -71,10 +102,10 @@ public class CarController : MonoBehaviour
     return CarriageBot.ProgressState.LEVEL;
   }
 
-  public static float ClampLanePosition(float lanePosition, float carWidth)
+  public bool IsLanePositionOffroad(float lanePosition)
   {
     var roadWidth = RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth;
-    var boundary = (roadWidth / 2f) - (carWidth / 2f);
-    return Mathf.Clamp(lanePosition, -boundary, boundary);
+    var boundary = (roadWidth / 2f) + 0.25f;
+    return lanePosition < -boundary || lanePosition > boundary;
   }
 }
