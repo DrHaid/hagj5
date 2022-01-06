@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 16418871}
   - component: {fileID: 16418872}
+  - component: {fileID: 16418873}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -148,8 +149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16418870}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.109, z: 0}
-  m_LocalScale: {x: 3.61, y: 1.39, z: 1}
+  m_LocalPosition: {x: 0, y: 0.212, z: 0}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 1}
   m_Children: []
   m_Father: {fileID: 1442079865}
   m_RootOrder: 1
@@ -193,8 +194,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 21300000, guid: 1204f5c8ffb68b94992cf2b6f9450e15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -205,6 +206,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &16418873
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16418870}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 841ac2789b7a0144b9d7a299f840fe5f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &196447525
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,17 +251,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196447525}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20.9, y: 10.31, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000686057}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 420715213}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 112.8, y: 116.3}
-  m_Pivot: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -0.00024414062, y: -15.680832}
+  m_SizeDelta: {x: 2048, y: 410}
+  m_Pivot: {x: 0.5, y: 0.488}
 --- !u!114 &196447527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5880e237b80aff742b68c8b17c3f5f41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -461,7 +481,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -5
+  m_SortingOrder: -50
   m_TargetDisplay: 0
 --- !u!224 &420715213
 RectTransform:
@@ -766,14 +786,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65a51d705089724d81986b09009cc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DistanceFromRoad: 0.5
+  DistanceFromRoad: 0.25
   EnvironmentFrequency: 0.02
   EnvironmentDeletionBuffer: 5
   EnvironmentTemplates:
-  - {fileID: 11400000, guid: 5a77bcb9bfab4a14cb36d119a3949356, type: 2}
-  - {fileID: 11400000, guid: c8c0fe62f4ee9584e903f5b2e3f319c3, type: 2}
-  - {fileID: 11400000, guid: 00c44829d8ad23f42a0ce2bb3836b45b, type: 2}
   - {fileID: 11400000, guid: c6383c0f7b0780841b73df33ec749327, type: 2}
+  - {fileID: 11400000, guid: 8f82d5a116754d54fbaa1fb318c8eb53, type: 2}
+  - {fileID: 11400000, guid: c8c0fe62f4ee9584e903f5b2e3f319c3, type: 2}
+  - {fileID: 11400000, guid: ff402c1fb803c764a94dc68816d143cb, type: 2}
+  - {fileID: 11400000, guid: 8810eb113efca5348956227746b47687, type: 2}
+  - {fileID: 11400000, guid: b9b43ae1516791445996adc47c8f8fb3, type: 2}
+  - {fileID: 11400000, guid: 5a77bcb9bfab4a14cb36d119a3949356, type: 2}
+  - {fileID: 11400000, guid: 14f6d96100b3cee45ba9a6a5188df8df, type: 2}
+  - {fileID: 11400000, guid: 00c44829d8ad23f42a0ce2bb3836b45b, type: 2}
 --- !u!4 &1209229111
 Transform:
   m_ObjectHideFlags: 0
@@ -834,8 +859,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5213631, y: 0.19781432, z: 0.456009}
-  m_Center: {x: 0, y: 0.11408587, z: 0.023948207}
+  m_Size: {x: 0.40221012, y: 0.19781432, z: 0.21454543}
+  m_Center: {x: 0.0016101599, y: 0.11408587, z: 0.035516202}
 --- !u!114 &1442079867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -910,7 +935,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50022ad5a8422db4b8dd38f898f60850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarriagePrefab: {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
+  CarriagePrefabs:
+  - {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
+  - {fileID: 2231344050188160772, guid: 08626dd0c89b0894799b07d4dfa64532, type: 3}
   MaxSpeed: 3
   MinSpeed: 6
   CarriageBots: []

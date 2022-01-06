@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CarriageManager : MonoBehaviour
 {
-  public GameObject CarriagePrefab;
+  public List<GameObject> CarriagePrefabs;
   public float MaxSpeed;
   public float MinSpeed;
   public List<CarriageBot> CarriageBots;
@@ -46,7 +46,8 @@ public class CarriageManager : MonoBehaviour
   [ContextMenu("Spawn Carriage")]
   public void SpawnCarriage()
   {
-    var carriage = Instantiate(CarriagePrefab);
+    var index = Random.Range(0, CarriagePrefabs.Count);
+    var carriage = Instantiate(CarriagePrefabs[index]);
     var bot = carriage.GetComponent<CarriageBot>();
     bot.InitBot(Random.Range(MinSpeed, MaxSpeed), Random.Range(0, RoadGeneration.instance.laneCount));
     CarriageBots.Add(bot);

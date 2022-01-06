@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class EnvironmentSettings : ScriptableObject
 {
-  public string Name;
   public EnvironmentType Type;
   public bool Exclusive;
   public int Weight;

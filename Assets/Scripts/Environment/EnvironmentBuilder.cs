@@ -14,10 +14,6 @@ public class EnvironmentBuilder : MonoBehaviour
 
   private int lastSegmentIndex = 0;
 
-  void Start()
-  {
-
-  }
 
   void Update()
   {
@@ -87,7 +83,7 @@ public class EnvironmentBuilder : MonoBehaviour
   private void PlaceObject(int segmentIndex, EnvironmentInstance inst, bool initialize = true)
   {
     var roadSegment = RoadGeneration.instance.roadSegments[segmentIndex];
-    var distToCenter = (RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth) + DistanceFromRoad;
+    var distToCenter = ((RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth) / 2) + DistanceFromRoad;
     var left = Vector3.Cross(roadSegment.direction, Vector3.up);
     var pos = roadSegment.position + (left * (inst.RoadSideRight ? -1 : 1)) * distToCenter;
     var dir = new Vector3(roadSegment.direction.x, 0f, roadSegment.direction.z);
@@ -100,6 +96,7 @@ public class EnvironmentBuilder : MonoBehaviour
           return;
         }
         var single = Instantiate(inst.Settings.Prefabs[0], pos, Quaternion.LookRotation(dir, Vector3.up));
+        single.transform.localScale = new Vector3((inst.RoadSideRight ? -1 : 1), 1f, 1f);
         single.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
         single.transform.parent = gameObject.transform;
         break;
@@ -111,6 +108,7 @@ public class EnvironmentBuilder : MonoBehaviour
           return;
         }
         var repeat = Instantiate(inst.Settings.Prefabs[0], pos, Quaternion.LookRotation(dir, Vector3.up));
+        repeat.transform.localScale = new Vector3((inst.RoadSideRight ? -1 : 1), 1f, 1f);
         repeat.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
         repeat.transform.parent = gameObject.transform;
         break;
@@ -122,6 +120,7 @@ public class EnvironmentBuilder : MonoBehaviour
           return;
         }
         var wall = Instantiate(initialize ? inst.Settings.Prefabs[0] : inst.Settings.Prefabs[1], pos, Quaternion.LookRotation(dir, Vector3.up));
+        wall.transform.localScale  = new Vector3((inst.RoadSideRight ? -1 : 1), 1f, 1f);
         wall.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
         wall.transform.parent = gameObject.transform;
         break;
@@ -141,6 +140,7 @@ public class EnvironmentBuilder : MonoBehaviour
         {
           var o = Instantiate(groupObj.Item2, pos + groupObj.Item1, Quaternion.identity, tempParent.transform);
           o.GetComponent<EnvironmentCleaner>().SetCleanerParams(inst, EnvironmentDeletionBuffer);
+          o.transform.localScale = new Vector3((inst.RoadSideRight ? -1 : 1), 1f, 1f);
         }
         tempParent.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         tempParent.transform.DetachChildren();

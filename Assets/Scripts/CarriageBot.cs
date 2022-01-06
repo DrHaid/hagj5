@@ -7,7 +7,7 @@ public class CarriageBot : MonoBehaviour
   public float Progress;
   public float LanePosition;
   public float Speed;
-  public bool SlowToStop;
+  public bool SlowToStop; // TODO: still doesn't work
 
   public ProgressState State;
 
