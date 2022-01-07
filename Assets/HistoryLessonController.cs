@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HistoryLessonController : MonoBehaviour
 {
-  public Animator animator;
+  public Animator Animator;
+  public GameObject StartTrip;
 
   void Start()
   {
@@ -15,18 +17,19 @@ public class HistoryLessonController : MonoBehaviour
   {
     if (Input.GetKey(KeyCode.Return))
     {
-      animator.speed = 5f;
+      Animator.speed = 5f;
     }
     else
     {
-      animator.speed = 1f;
+      Animator.speed = 1f;
     }
 
-    if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7)
+    if (Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7)
     {
+      StartTrip.SetActive(true);
       if (Input.GetKeyDown(KeyCode.Return))
       {
-        // load next scene
+        SceneManager.LoadScene(2);
       }
     }
   }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -36,8 +37,7 @@ public class MainMenuController : MonoBehaviour
     }
     if (Input.GetKeyDown(KeyCode.Return))
     {
-      // load next scene
-      Debug.Log("loading...");
+      SceneManager.LoadScene(1);
     }
   }
 }
