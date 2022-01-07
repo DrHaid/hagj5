@@ -149,8 +149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16418870}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.212, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 1}
+  m_LocalPosition: {x: 0, y: 0.195, z: 0}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 1}
   m_Children:
   - {fileID: 949297980}
   - {fileID: 1790500355}
@@ -195,7 +195,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1822230433
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 1204f5c8ffb68b94992cf2b6f9450e15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -664,7 +664,7 @@ MonoBehaviour:
   segmentIndex: 0
   segmentCount: 300
   laneCount: 5
-  laneWidth: 1
+  laneWidth: 0.6
   segmentLength: 0.3
   roadMeshFilter: {fileID: 0}
   curveSettings: {fileID: 11400000, guid: f64b6e677e7ddc34bba87288e4020183, type: 2}
@@ -819,7 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 0.4
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
@@ -1396,7 +1396,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1822230433
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: cd5f6118d3f908645bed6c669bb8dc74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1794,6 +1794,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9b43ae1516791445996adc47c8f8fb3, type: 2}
   - {fileID: 11400000, guid: 5a77bcb9bfab4a14cb36d119a3949356, type: 2}
   - {fileID: 11400000, guid: 14f6d96100b3cee45ba9a6a5188df8df, type: 2}
+  - {fileID: 11400000, guid: 4bd7a8f398b8242479e525e7b65a1729, type: 2}
+  - {fileID: 11400000, guid: 87a50a2ebbef1d14bb00ecf49d995d0f, type: 2}
+  - {fileID: 11400000, guid: 65290fa86e44ca7428756b6595cce72e, type: 2}
+  - {fileID: 11400000, guid: 07f231aa8ca33054fa504dfec9d2d033, type: 2}
   - {fileID: 11400000, guid: 00c44829d8ad23f42a0ce2bb3836b45b, type: 2}
 --- !u!4 &1209229111
 Transform:
@@ -1856,8 +1860,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.40221012, y: 0.19781432, z: 0.21454543}
-  m_Center: {x: 0.0016101599, y: 0.11408587, z: 0.035516202}
+  m_Size: {x: 0.38202786, y: 0.19781432, z: 0.21454543}
+  m_Center: {x: 0.0016101301, y: 0.11408587, z: 0.035516202}
 --- !u!114 &1442079867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1871,7 +1875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Lives: 3
-  MaxSpeed: 1000
+  MaxSpeed: 15
   Animator: {fileID: 16418873}
   SmokeParticles: {fileID: 1790500354}
   CarBroke: 0
@@ -1965,7 +1969,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1822230433
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 10
   m_RenderMode: 0
   m_SortMode: 0
@@ -6755,7 +6759,7 @@ MonoBehaviour:
   CarriagePrefabs:
   - {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
   - {fileID: 2231344050188160772, guid: 08626dd0c89b0894799b07d4dfa64532, type: 3}
-  SpawnRate: 0.02
+  SpawnRate: 0.13
   MaxSpeed: 4
   MinSpeed: 4
   CarriageBots: []

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fdc4ddec2f7374eb532409ae3aab82, type: 3}
+  m_Name: Town4
+  m_EditorClassIdentifier: 
+  Type: 1
+  Exclusive: 0
+  Weight: 1
+  MinRange: 3
+  MaxRange: 3
+  GapSize: 0
+  Prefabs:
+  - {fileID: 4828907286703755043, guid: 606ca92901c3452449cd7009b7b70c20, type: 3}
+  - {fileID: 4280380011421398345, guid: fc57163a2f5542b44a25ec8a9e30fbb9, type: 3}
+  - {fileID: 3074815422121828855, guid: b04ab606440a864488d85a0ea408cc48, type: 3}
+  - {fileID: 473158991615245001, guid: d58744d99108b03408663f3ad607e536, type: 3}

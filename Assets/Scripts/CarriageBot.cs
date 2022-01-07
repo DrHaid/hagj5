@@ -13,8 +13,8 @@ public class CarriageBot : MonoBehaviour
 
   public enum ProgressState
   {
-    AHEAD,
     LEVEL,
+    AHEAD,
     OUTRUN
   }
 
@@ -23,10 +23,12 @@ public class CarriageBot : MonoBehaviour
     if (changingLane)
     {
       LanePosition = Mathf.SmoothStep(oldLanePosition, newLanePosition, changingProgress);
-      changingProgress += Time.deltaTime / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.7f;
+      changingProgress += (Time.deltaTime) / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.3f;
 
       if (changingProgress >= 1f)
       {
+        float randomTime = Random.Range(5, 10);
+        Invoke("ChangeLaneRoutine", randomTime);
         changingLane = false;
         LanePosition = newLanePosition;
       }
@@ -45,22 +47,21 @@ public class CarriageBot : MonoBehaviour
     }
 
     State = CarController.SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
-    if(State == ProgressState.OUTRUN)
+    if (State == ProgressState.OUTRUN || State == ProgressState.AHEAD)
     {
       // wait for destruction by CarriageManager
       return;
     }
-    if(State != ProgressState.AHEAD)
-    {
-      Progress += Time.deltaTime * Speed;
-    }
+    Progress += Time.deltaTime * Speed;
   }
 
   public void InitBot(float speed, int startingLane)
   {
+    State = ProgressState.LEVEL;
     Speed = speed;
-    Progress = RoadGeneration.instance.roadSegments.Count * RoadGeneration.instance.segmentLength;
+    Progress = (RoadGeneration.instance.roadSegments.Count - 5) * RoadGeneration.instance.segmentLength;
     LanePosition = GetLanePosition(startingLane);
+    Invoke("ChangeLaneRoutine", Random.Range(2, 5));
   }
 
   private float GetLanePosition(int laneIndex)
@@ -79,25 +80,24 @@ public class CarriageBot : MonoBehaviour
   private float oldLanePosition;
   private float newLanePosition;
   private float changingProgress = 0f;
-  public bool ChangeLane(int newLaneIndex)
+  public void ChangeLane(int newLaneIndex)
   {
     changingLane = true;
     oldLanePosition = LanePosition;
     newLanePosition = GetLanePosition(newLaneIndex);
     changingProgress = 0f;
-    return true;
   }
 
-  public void ChangeLaneRoutine() 
-  { 
-    float randomTime = Random.Range(3, 10);
-
+  public void ChangeLaneRoutine()
+  {
     var newLane = GetCurrentLaneIndex() + (Random.value > 0.5f ? 1 : -1);
-    var lanePos = GetLanePosition(newLane);
-    if (CarriageManager.instance.IsLanePositionFree(lanePos, this, 5f))
+    if (newLane >= 0 && newLane < RoadGeneration.instance.laneCount)
     {
-      ChangeLane(newLane);
+      var lanePos = GetLanePosition(newLane);
+      if (CarriageManager.instance.IsLanePositionFree(lanePos, this, 0.4f))
+      {
+        ChangeLane(newLane);
+      }
     }
-    Invoke("ChangeLaneRoutine", randomTime);
   }
 }

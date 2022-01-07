@@ -38,11 +38,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Environment
-    uniqueID: 2134668689
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Environment
+    uniqueID: 2134668689
     locked: 0
   - name: Carriages
     uniqueID: 3459305807

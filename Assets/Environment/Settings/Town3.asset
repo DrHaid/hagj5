@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fdc4ddec2f7374eb532409ae3aab82, type: 3}
+  m_Name: Town3
+  m_EditorClassIdentifier: 
+  Type: 1
+  Exclusive: 0
+  Weight: 1
+  MinRange: 5
+  MaxRange: 5
+  GapSize: 0
+  Prefabs:
+  - {fileID: 4828907286703755043, guid: 606ca92901c3452449cd7009b7b70c20, type: 3}
+  - {fileID: 676354722769675674, guid: 62921c3e6c19c524ab9c872550440e3d, type: 3}
+  - {fileID: 4280380011421398345, guid: fc57163a2f5542b44a25ec8a9e30fbb9, type: 3}
+  - {fileID: 1992611311617236405, guid: bcc3085d037ab914b9dc1e064d0feea8, type: 3}
+  - {fileID: 4712318002995800105, guid: c49678a8db1bc6347b0dcfab33ae146c, type: 3}
+  - {fileID: 8225846794297533063, guid: 6237eab8fa06b394c966902d86a27e6e, type: 3}
+  - {fileID: 8053978605258774486, guid: 4252840ae1ad84c418fdc48020207741, type: 3}
+  - {fileID: 4280380011421398345, guid: fc57163a2f5542b44a25ec8a9e30fbb9, type: 3}

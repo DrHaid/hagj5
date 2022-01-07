@@ -32,11 +32,11 @@ public class CarriageManager : MonoBehaviour
   void Update()
   {
     CarriageCleanup();
-    for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i++)
+    for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i = i + 5)
     {
       if (Random.value > SpawnRate)
       {
-        return;
+        break;
       }
 
       var noise = Mathf.PerlinNoise(0, Mathf.Repeat(RoadGeneration.instance.roadSegments.Count, noiseLength) / noiseLength * 100);
@@ -50,7 +50,8 @@ public class CarriageManager : MonoBehaviour
 
   private void CarriageCleanup()
   {
-    CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => x.State == CarriageBot.ProgressState.OUTRUN);
+    CarriageBot botToDelete = CarriageBots.FirstOrDefault(x => 
+      x.State == CarriageBot.ProgressState.OUTRUN || x.State == CarriageBot.ProgressState.AHEAD);
     if (botToDelete != null)
     {
       Destroy(botToDelete.gameObject ?? null);
@@ -90,7 +91,7 @@ public class CarriageManager : MonoBehaviour
     {
       if (bot.LanePosition == newLanePosition)
       {
-        if (carriageBot.Progress < bot.Progress + range || carriageBot.Progress > bot.Progress - range)
+        if (carriageBot.Progress < bot.Progress + range && carriageBot.Progress > bot.Progress - range)
         {
           return false;
         }

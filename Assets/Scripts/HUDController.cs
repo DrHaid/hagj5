@@ -9,16 +9,25 @@ public class HUDController : MonoBehaviour
   public TextMeshProUGUI Speed;
   public TextMeshProUGUI Lives;
 
-  private float lastProgress = 0;
+  private Vector3 lastPos = Vector3.zero;
+  private float initProgress;
+  private int actualDistance;
+
+  private void Start()
+  {
+    initProgress = CarController.instance.Progress;
+  }
 
   void FixedUpdate()
   {
-    DistanceTravelled.text = $"Distance Travelled: {(int)CarController.instance.Progress} m";
-    int speed = (int)(((CarController.instance.Progress - lastProgress) / Time.fixedDeltaTime) * 3.6f);
+    actualDistance = (int)((CarController.instance.Progress - initProgress) * 2.5f);
+    DistanceTravelled.text = $"Distance Travelled: {actualDistance} m";
+    var dist = Vector3.Distance(lastPos, CarController.instance.gameObject.transform.position);
+    int speed = (int)(((dist * 2.5f) / Time.fixedDeltaTime) * 3.6f);
     speed = RoundDown(speed);
     Speed.text = $"Speed: {speed} km/h";
-    lastProgress = CarController.instance.Progress;
-    Lives.text = $"Speed: {CarController.instance.Lives}";
+    lastPos = CarController.instance.gameObject.transform.position;
+    Lives.text = $"Lives: {CarController.instance.Lives}";
   }
 
   int RoundDown(int toRound)
