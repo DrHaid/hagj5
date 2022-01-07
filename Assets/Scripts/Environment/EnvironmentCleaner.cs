@@ -11,7 +11,7 @@ public class EnvironmentCleaner : MonoBehaviour
   {
     if (environmentInstance == null)
     {
-      Debug.Log("No Cleaner parameters set.");
+      Debug.Log("No Cleaner parameters set. " + gameObject.name);
       return;
     }
     if (environmentInstance.LastSegmentIndex == -1)

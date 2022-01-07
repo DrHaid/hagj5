@@ -5,18 +5,22 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
   public int Lives = 3;
-  public float MaxSpeed = 1000f;
+  public float MaxSpeed = 15f;
   public Animator Animator;
   public GameObject SmokeParticles;
   public bool CarBroke = false;
+  public bool CarStopped = false;
 
   [HideInInspector] public float Progress;
   [HideInInspector] public float LanePosition;
-  public float Speed;
+  [HideInInspector] public float Speed;
+  [HideInInspector] public int actualDistance;
 
+  [HideInInspector] public float initProgress;
   private float collisionTimeout;
 
   public static CarController instance;
+
 
   private void Awake()
   {
@@ -26,10 +30,16 @@ public class CarController : MonoBehaviour
   private void Start()
   {
     AudioController.instance.StartMotor();
+    initProgress = Progress;
   }
 
   void Update()
   {
+    if (CarStopped)
+    {
+      Speed = HorizonPositioner.Remap(
+        actualDistance, RoadGeneration.pforzheimDistance - 100, RoadGeneration.pforzheimDistance - 5, MaxSpeed, 0);
+    }
     if (CarBroke)
     {
       Speed = Mathf.Clamp(Speed - 5 * Time.deltaTime, 0, float.MaxValue);
@@ -37,7 +47,7 @@ public class CarController : MonoBehaviour
     }
     collisionTimeout = Mathf.Clamp(collisionTimeout - Time.deltaTime, 0, float.MaxValue);
 
-    if (!CarBroke)
+    if (!CarBroke && !CarStopped)
     {
       if (Input.GetKey(KeyCode.UpArrow))
       {
@@ -49,11 +59,11 @@ public class CarController : MonoBehaviour
       }
       if (Input.GetKey(KeyCode.RightArrow))
       {
-        LanePosition += 0.2f * Speed * Time.deltaTime;
+        LanePosition += 0.15f * Speed * Time.deltaTime;
       }
       if (Input.GetKey(KeyCode.LeftArrow))
       {
-        LanePosition -= 0.2f * Speed * Time.deltaTime;
+        LanePosition -= 0.15f * Speed * Time.deltaTime;
       }
     }
 
@@ -67,10 +77,15 @@ public class CarController : MonoBehaviour
     }
 
     Progress += Time.deltaTime * Speed;
+    actualDistance = (int)((Progress - initProgress) * 2.5f);
     SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
     if (IsLanePositionOffroad(LanePosition))
     {
       CarBroke = true;
+    }
+    if (actualDistance == RoadGeneration.pforzheimDistance - 50)
+    {
+      CarStopped = true;
     }
 
     // set position of RoadGeneration
@@ -123,7 +138,7 @@ public class CarController : MonoBehaviour
   public bool IsLanePositionOffroad(float lanePosition)
   {
     var roadWidth = RoadGeneration.instance.laneCount * RoadGeneration.instance.laneWidth;
-    var boundary = (roadWidth / 2f) + 0.25f;
+    var boundary = (roadWidth / 2f) + 0.2f;
     return lanePosition < -boundary || lanePosition > boundary;
   }
 }

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51fdc4ddec2f7374eb532409ae3aab82, type: 3}
-  m_Name: Lamps
+  m_Name: MannheimRight
   m_EditorClassIdentifier: 
-  Type: 2
-  Exclusive: 0
-  Weight: 3
+  Type: 0
+  Exclusive: 1
+  Weight: 1
   MinRange: 10
-  MaxRange: 30
-  GapSize: 5
+  MaxRange: 10
+  GapSize: 0
   Prefabs:
-  - {fileID: 2869312735987483716, guid: 828835e7748ed524a8312ba87f657b77, type: 3}
+  - {fileID: 8551287494919218646, guid: 48b8f43e4516dfe4cb6812f03688bdae, type: 3}

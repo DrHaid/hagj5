@@ -14,6 +14,8 @@ public class RoadGeneration : MonoBehaviour
   public List<RoadSegment> roadSegments;
   [HideInInspector] public MeshFilter roadMeshFilter;
 
+  public static int pforzheimDistance = 500;
+
   public CurveSettings curveSettings;
   public SlopeSettings slopeSettings;
 

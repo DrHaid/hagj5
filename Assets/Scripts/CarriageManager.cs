@@ -32,11 +32,11 @@ public class CarriageManager : MonoBehaviour
   void Update()
   {
     CarriageCleanup();
-    for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i = i + 5)
+    for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i += 5)
     {
       if (Random.value > SpawnRate)
       {
-        break;
+        break; // HACK: break is right. trust me. not right like correct, but continue makes carriages spawn in one line at the last segment
       }
 
       var noise = Mathf.PerlinNoise(0, Mathf.Repeat(RoadGeneration.instance.roadSegments.Count, noiseLength) / noiseLength * 100);

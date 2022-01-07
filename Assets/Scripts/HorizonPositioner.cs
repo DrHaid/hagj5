@@ -26,6 +26,10 @@ public class HorizonPositioner : MonoBehaviour
     var xPos = Remap(angle, -180, 180, 0, -8192);
 
     // make horizon stick to last RoadSegment
+    if (RoadGeneration.instance.roadSegments.Count == 0)
+    {
+      return;
+    }
     var roadSegment = 
       RoadGeneration.instance.roadSegments[RoadGeneration.instance.roadSegments.Count - 1];
     Vector2 viewport = Camera.main.WorldToViewportPoint(roadSegment.position);

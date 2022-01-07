@@ -9,17 +9,44 @@ public class EnvironmentBuilder : MonoBehaviour
   public float EnvironmentFrequency;
   public int EnvironmentDeletionBuffer;
 
+  public EnvironmentSettings MannheimLeft;
+  public EnvironmentSettings MannheimRight;
+
+  public EnvironmentSettings PforzheimLeft;
+  public EnvironmentSettings PforzheimRight;
+
   public List<EnvironmentSettings> EnvironmentTemplates = new List<EnvironmentSettings>();
   public List<EnvironmentInstance> ActiveEnvironments = new List<EnvironmentInstance>();
 
-  private int lastSegmentIndex = 0;
-
+  private int lastSegmentIndex = 45;
+  private bool stopGenerating;
 
   void Update()
   {
+    if (stopGenerating)
+    {
+      return;
+    }
+
     // check unckecked roadSegments if environment object should be spawned
     for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i++)
     {
+      if (i == 45)
+      {
+        PlaceObject(i, new EnvironmentInstance(MannheimLeft, false));
+        PlaceObject(i, new EnvironmentInstance(MannheimRight, true));
+      }
+
+      if ((int)(((i * RoadGeneration.instance.segmentLength) - CarController.instance.initProgress) * 2.5f) 
+        == RoadGeneration.pforzheimDistance)
+      {
+        ActiveEnvironments.Clear();
+        stopGenerating = true;
+        PlaceObject(i, new EnvironmentInstance(PforzheimLeft, false));
+        PlaceObject(i, new EnvironmentInstance(PforzheimRight, true));
+        return;
+      }
+
       var finished = new List<EnvironmentInstance>();
       foreach (var activeEnv in ActiveEnvironments)
       {
@@ -50,13 +77,13 @@ public class EnvironmentBuilder : MonoBehaviour
       // choose if environment should be generated
       if ( UnityEngine.Random.value > EnvironmentFrequency)
       {
-        break;
+        continue;
       }
 
       var freeRoadSide = GetFreeRoadSide();
       if (freeRoadSide == null)
       {
-        break;
+        continue;
       }
 
       var envObj = new EnvironmentInstance(PickEnvironmentObject(), freeRoadSide);
