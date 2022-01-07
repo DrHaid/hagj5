@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+  public int Lives = 3;
+  public float MaxSpeed = 1000f;
   public Animator Animator;
   public GameObject SmokeParticles;
   public bool CarBroke = false;
 
   [HideInInspector] public float Progress;
   [HideInInspector] public float LanePosition;
-  [HideInInspector] public float Speed;
+  public float Speed;
+
+  private float collisionTimeout;
+
+  public static CarController instance;
+
+  private void Awake()
+  {
+    instance = this;
+  }
 
   private void Start()
   {
@@ -24,16 +35,17 @@ public class CarController : MonoBehaviour
       Speed = Mathf.Clamp(Speed - 5 * Time.deltaTime, 0, float.MaxValue);
       SmokeParticles.SetActive(true);
     }
+    collisionTimeout = Mathf.Clamp(collisionTimeout - Time.deltaTime, 0, float.MaxValue);
 
     if (!CarBroke)
     {
       if (Input.GetKey(KeyCode.UpArrow))
       {
-        Speed += 0.01f;
+        Speed = Mathf.Clamp(Speed + 0.02f, 0f, MaxSpeed); ;
       }
       if (Input.GetKey(KeyCode.DownArrow))
       {
-        Speed = Mathf.Clamp(Speed - 0.02f, 0f, 1000f);
+        Speed = Mathf.Clamp(Speed - 0.02f, 0f, float.MaxValue);
       }
       if (Input.GetKey(KeyCode.RightArrow))
       {
@@ -72,6 +84,12 @@ public class CarController : MonoBehaviour
   {
     var bot = other.transform.GetComponent<CarriageBot>();
     HandleCollision(bot);
+    Lives--;
+    collisionTimeout = 1f;
+    if (Lives == 0)
+    {
+      CarBroke = true;
+    }
     AudioController.instance.PlayCollisionSound();
   }
 

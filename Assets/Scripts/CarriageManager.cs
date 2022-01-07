@@ -7,11 +7,17 @@ public class CarriageManager : MonoBehaviour
 {
   public List<Color32> CarriageColors;
   public List<GameObject> CarriagePrefabs;
+  public float SpawnRate;
   public float MaxSpeed;
   public float MinSpeed;
   public List<CarriageBot> CarriageBots;
 
   public static CarriageManager instance;
+
+  private const int noiseLength = 2048;
+  private int lastSegmentIndex = 0;
+
+  private int sortingIndex = 0;
 
   private void Awake()
   {
@@ -26,15 +32,20 @@ public class CarriageManager : MonoBehaviour
   void Update()
   {
     CarriageCleanup();
+    for (int i = lastSegmentIndex; i < RoadGeneration.instance.roadSegments.Count; i++)
+    {
+      if (Random.value > SpawnRate)
+      {
+        return;
+      }
 
-    if(Input.GetKeyDown(KeyCode.Space))
-    {
-      SpawnCarriage();
+      var noise = Mathf.PerlinNoise(0, Mathf.Repeat(RoadGeneration.instance.roadSegments.Count, noiseLength) / noiseLength * 100);
+      if (noise > 0.5f)
+      {
+        SpawnCarriage();
+      }
     }
-    if (Input.GetKeyDown(KeyCode.C))
-    {
-      CarriageBots[0].ChangeLane(0);
-    }
+    lastSegmentIndex = RoadGeneration.instance.roadSegments.Count;
   }
 
   private void CarriageCleanup()
@@ -55,8 +66,36 @@ public class CarriageManager : MonoBehaviour
     var bot = carriage.GetComponent<CarriageBot>();
     bot.InitBot(Random.Range(MinSpeed, MaxSpeed), Random.Range(0, RoadGeneration.instance.laneCount));
     var color = Random.Range(0, CarriageColors.Count);
-    carriage.transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color 
+    var sprite = carriage.transform.GetChild(0);
+    sprite.GetChild(0).GetComponent<SpriteRenderer>().color
       = CarriageColors[color];
+    sprite.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
+    sprite.GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
+    if (sprite.childCount == 3)
+    {
+      sprite.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex;
+      sprite.GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
+    } 
+    else if (sprite.childCount == 2)
+    {
+      sprite.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
+    }
+
     CarriageBots.Add(bot);
+  }
+
+  public bool IsLanePositionFree(float newLanePosition, CarriageBot carriageBot, float range)
+  {
+    foreach (var bot in CarriageBots)
+    {
+      if (bot.LanePosition == newLanePosition)
+      {
+        if (carriageBot.Progress < bot.Progress + range || carriageBot.Progress > bot.Progress - range)
+        {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

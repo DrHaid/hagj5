@@ -200,9 +200,9 @@ public class EnvironmentInstance
     foreach (var envObj in Settings.Prefabs)
     {
       var pos = new Vector3(
-          UnityEngine.Random.Range(0, 10 * (RoadSideRight ? 1 : -1)),
+          UnityEngine.Random.Range(0, 7 * (RoadSideRight ? 1 : -1)),
           0,
-          UnityEngine.Random.Range(-(Range / 2), (Range / 2))
+          UnityEngine.Random.Range(0, Range)
         );
       Objects.Add(new Tuple<Vector3, GameObject>(pos, envObj));
     }

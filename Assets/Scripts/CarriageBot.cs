@@ -79,11 +79,25 @@ public class CarriageBot : MonoBehaviour
   private float oldLanePosition;
   private float newLanePosition;
   private float changingProgress = 0f;
-  public void ChangeLane(int newLaneIndex)
+  public bool ChangeLane(int newLaneIndex)
   {
     changingLane = true;
     oldLanePosition = LanePosition;
     newLanePosition = GetLanePosition(newLaneIndex);
     changingProgress = 0f;
+    return true;
+  }
+
+  public void ChangeLaneRoutine() 
+  { 
+    float randomTime = Random.Range(3, 10);
+
+    var newLane = GetCurrentLaneIndex() + (Random.value > 0.5f ? 1 : -1);
+    var lanePos = GetLanePosition(newLane);
+    if (CarriageManager.instance.IsLanePositionFree(lanePos, this, 5f))
+    {
+      ChangeLane(newLane);
+    }
+    Invoke("ChangeLaneRoutine", randomTime);
   }
 }
