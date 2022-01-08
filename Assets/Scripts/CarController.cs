@@ -58,11 +58,11 @@ public class CarController : MonoBehaviour
       }
       if (Input.GetKey(KeyCode.RightArrow))
       {
-        LanePosition += 0.03f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
+        LanePosition += 0.035f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
       }
       if (Input.GetKey(KeyCode.LeftArrow))
       {
-        LanePosition -= 0.03f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
+        LanePosition -= 0.035f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
       }
     }
 
