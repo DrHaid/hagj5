@@ -18,12 +18,12 @@ public class CarriageBot : MonoBehaviour
     OUTRUN
   }
 
-  void Update()
+  void FixedUpdate()
   {
     if (changingLane)
     {
       LanePosition = Mathf.SmoothStep(oldLanePosition, newLanePosition, changingProgress);
-      changingProgress += (Time.deltaTime) / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.3f;
+      changingProgress += (Time.fixedDeltaTime) / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.3f;
       if (slowDown)
       {
         Speed = prevSpeed * 0.75f;
@@ -45,7 +45,7 @@ public class CarriageBot : MonoBehaviour
     }
     if (SlowToStop)
     {
-      Speed = Mathf.Clamp(Speed - Time.deltaTime, 0, float.MaxValue);
+      Speed = Mathf.Clamp(Speed - Time.fixedDeltaTime, 0, float.MaxValue);
       if (Speed == 0)
       {
         SlowToStop = false;
@@ -58,7 +58,7 @@ public class CarriageBot : MonoBehaviour
       // wait for destruction by CarriageManager
       return;
     }
-    Progress += Time.deltaTime * Speed;
+    Progress += Time.fixedDeltaTime * Speed;
   }
 
   public void InitBot(float speed, int startingLane)

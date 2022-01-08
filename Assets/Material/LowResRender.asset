@@ -1,7 +1,7 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!84 &8400000
-RenderTexture:
+--- !u!86 &8600000
+CustomRenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -19,13 +19,13 @@ RenderTexture:
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthFormat: 2
-  m_ColorFormat: 24
+  m_ColorFormat: 8
   m_MipMap: 0
   m_GenerateMips: 1
   m_SRGB: 0
   m_UseDynamicScale: 0
   m_BindMS: 0
-  m_EnableCompatibleFormat: 0
+  m_EnableCompatibleFormat: 1
   m_TextureSettings:
     serializedVersion: 2
     m_FilterMode: 0
@@ -36,3 +36,18 @@ RenderTexture:
     m_WrapW: 1
   m_Dimension: 2
   m_VolumeDepth: 1
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_InitSource: 0
+  m_InitMaterial: {fileID: 0}
+  m_InitColor: {r: 1, g: 1, b: 1, a: 1}
+  m_InitTexture: {fileID: 0}
+  m_UpdateMode: 0
+  m_InitializationMode: 2
+  m_UpdateZoneSpace: 0
+  m_CurrentUpdateZoneSpace: 0
+  m_UpdateZones: []
+  m_UpdatePeriod: 0
+  m_ShaderPass: 0
+  m_CubemapFaceMask: 4294967295
+  m_DoubleBuffered: 0
+  m_WrapUpdateZones: 0

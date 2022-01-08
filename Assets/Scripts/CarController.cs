@@ -21,7 +21,6 @@ public class CarController : MonoBehaviour
 
   public static CarController instance;
 
-
   private void Awake()
   {
     instance = this;
@@ -33,7 +32,7 @@ public class CarController : MonoBehaviour
     initProgress = Progress;
   }
 
-  void Update()
+  void FixedUpdate()
   {
     if (CarStopped)
     {
@@ -42,28 +41,28 @@ public class CarController : MonoBehaviour
     }
     if (CarBroke)
     {
-      Speed = Mathf.Clamp(Speed - 5 * Time.deltaTime, 0, float.MaxValue);
+      Speed = Mathf.Clamp(Speed - 5 * Time.fixedDeltaTime, 0, float.MaxValue);
       SmokeParticles.SetActive(true);
     }
-    collisionTimeout = Mathf.Clamp(collisionTimeout - Time.deltaTime, 0, float.MaxValue);
+    collisionTimeout = Mathf.Clamp(collisionTimeout - Time.fixedDeltaTime, 0, float.MaxValue);
 
     if (!CarBroke && !CarStopped)
     {
       if (Input.GetKey(KeyCode.UpArrow))
       {
-        Speed = Mathf.Clamp(Speed + 0.02f, 0f, MaxSpeed); ;
+        Speed = Mathf.Clamp(Speed + 0.15f, 0f, MaxSpeed); ;
       }
       if (Input.GetKey(KeyCode.DownArrow))
       {
-        Speed = Mathf.Clamp(Speed - 0.02f, 0f, float.MaxValue);
+        Speed = Mathf.Clamp(Speed - 0.15f, 0f, float.MaxValue);
       }
       if (Input.GetKey(KeyCode.RightArrow))
       {
-        LanePosition += 0.15f * Speed * Time.deltaTime;
+        LanePosition += 0.03f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
       }
       if (Input.GetKey(KeyCode.LeftArrow))
       {
-        LanePosition -= 0.15f * Speed * Time.deltaTime;
+        LanePosition -= 0.03f * RoadGeneration.InvertedSmoothStep(0, 1, (Speed / MaxSpeed));
       }
     }
 
@@ -76,7 +75,7 @@ public class CarController : MonoBehaviour
       Animator.speed = 1;
     }
 
-    Progress += Time.deltaTime * Speed;
+    Progress += Time.fixedDeltaTime * Speed;
     actualDistance = (int)((Progress - initProgress) * 2.5f);
     SetTransformFromProgress(gameObject.transform, Progress, LanePosition);
     if (IsLanePositionOffroad(LanePosition))

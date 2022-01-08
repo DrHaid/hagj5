@@ -1823,10 +1823,10 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 9309a38c80a931c41adc355883063391, type: 2}
+  m_TargetTexture: {fileID: 8600000, guid: 45a23e8eea5cefd45909ad4e817795a9, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -7351,7 +7351,7 @@ GameObject:
   - component: {fileID: 1836585556}
   - component: {fileID: 1836585555}
   m_Layer: 5
-  m_Name: ScreenRendering
+  m_Name: LowResRender
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7396,7 +7396,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 9309a38c80a931c41adc355883063391, type: 2}
+  m_Texture: {fileID: 8600000, guid: 45a23e8eea5cefd45909ad4e817795a9, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -7469,8 +7469,8 @@ MonoBehaviour:
   - {fileID: 1914841179397141279, guid: 8801c3fb73772a24aae0063f6d90a933, type: 3}
   - {fileID: 2231344050188160772, guid: 08626dd0c89b0894799b07d4dfa64532, type: 3}
   SpawnRate: 0.13
-  MaxSpeed: 4
-  MinSpeed: 4
+  MaxSpeed: 8
+  MinSpeed: 8
   CarriageBots: []
 --- !u!1 &2002462867
 GameObject:

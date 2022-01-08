@@ -18,7 +18,7 @@ public class HorizonPositioner : MonoBehaviour
     initDir.y = 0;
   }
 
-  void Update()
+  void FixedUpdate()
   {
     var dir = mainCam.transform.forward;
     dir.y = 0;
