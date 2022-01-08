@@ -41,12 +41,3 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Environment
-    uniqueID: 2134668689
-    locked: 0
-  - name: Carriages
-    uniqueID: 3459305807
-    locked: 0
-  - name: MainCarriage
-    uniqueID: 2472736863
-    locked: 0

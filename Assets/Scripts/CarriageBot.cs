@@ -7,7 +7,7 @@ public class CarriageBot : MonoBehaviour
   public float Progress;
   public float LanePosition;
   public float Speed;
-  public bool SlowToStop; // TODO: still doesn't work
+  public bool SlowToStop;
 
   public ProgressState State;
 
@@ -24,11 +24,17 @@ public class CarriageBot : MonoBehaviour
     {
       LanePosition = Mathf.SmoothStep(oldLanePosition, newLanePosition, changingProgress);
       changingProgress += (Time.deltaTime) / (Mathf.Abs(newLanePosition - oldLanePosition)) * 0.3f;
+      if (slowDown)
+      {
+        Speed = prevSpeed * 0.75f;
+      }
 
       if (changingProgress >= 1f)
       {
         float randomTime = Random.Range(5, 10);
         Invoke("ChangeLaneRoutine", randomTime);
+        slowDown = false;
+        Speed = prevSpeed;
         changingLane = false;
         LanePosition = newLanePosition;
       }
@@ -64,7 +70,7 @@ public class CarriageBot : MonoBehaviour
     Invoke("ChangeLaneRoutine", Random.Range(2, 5));
   }
 
-  private float GetLanePosition(int laneIndex)
+  public float GetLanePosition(int laneIndex)
   {
     var posFromLeft = laneIndex * RoadGeneration.instance.laneWidth + (RoadGeneration.instance.laneWidth / 2);
     return -((RoadGeneration.instance.laneWidth * RoadGeneration.instance.laneCount) / 2) + posFromLeft;
@@ -77,12 +83,16 @@ public class CarriageBot : MonoBehaviour
   }
 
   private bool changingLane = false;
+  private float prevSpeed;
+  private bool slowDown;
   private float oldLanePosition;
   private float newLanePosition;
   private float changingProgress = 0f;
-  public void ChangeLane(int newLaneIndex)
+  public void ChangeLane(int newLaneIndex, bool slowDown = false)
   {
     changingLane = true;
+    prevSpeed = Speed;
+    this.slowDown = slowDown;
     oldLanePosition = LanePosition;
     newLanePosition = GetLanePosition(newLaneIndex);
     changingProgress = 0f;

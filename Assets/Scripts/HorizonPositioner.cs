@@ -23,7 +23,7 @@ public class HorizonPositioner : MonoBehaviour
     var dir = mainCam.transform.forward;
     dir.y = 0;
     var angle = Vector3.SignedAngle(initDir, dir, Vector3.up);
-    var xPos = Remap(angle, -180, 180, 0, -8192);
+    var xPos = Remap(angle, -180, 180, 0, -4096);
 
     // make horizon stick to last RoadSegment
     if (RoadGeneration.instance.roadSegments.Count == 0)

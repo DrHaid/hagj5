@@ -17,8 +17,6 @@ public class CarriageManager : MonoBehaviour
   private const int noiseLength = 2048;
   private int lastSegmentIndex = 0;
 
-  private int sortingIndex = 0;
-
   private void Awake()
   {
     instance = this;
@@ -70,17 +68,6 @@ public class CarriageManager : MonoBehaviour
     var sprite = carriage.transform.GetChild(0);
     sprite.GetChild(0).GetComponent<SpriteRenderer>().color
       = CarriageColors[color];
-    sprite.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
-    sprite.GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
-    if (sprite.childCount == 3)
-    {
-      sprite.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex;
-      sprite.GetChild(2).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
-    } 
-    else if (sprite.childCount == 2)
-    {
-      sprite.GetChild(1).GetComponent<SpriteRenderer>().sortingOrder = sortingIndex--;
-    }
 
     CarriageBots.Add(bot);
   }

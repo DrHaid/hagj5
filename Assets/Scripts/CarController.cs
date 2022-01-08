@@ -112,7 +112,21 @@ public class CarController : MonoBehaviour
   {
     Speed = bot.Speed - 2f;
     var collisionFromLeft = LanePosition < bot.LanePosition;
-    bot.ChangeLane(bot.GetCurrentLaneIndex() + (collisionFromLeft ? 1 : -1));
+    int targetLane = bot.GetCurrentLaneIndex() + (collisionFromLeft ? 1 : -1);
+    int altLane = bot.GetCurrentLaneIndex() + (collisionFromLeft ? -1 : 1);
+    var pos = bot.GetLanePosition(targetLane);
+    var altPos = bot.GetLanePosition(altLane);
+    if (CarriageManager.instance.IsLanePositionFree(pos, bot, 0.4f))
+    {
+      bot.ChangeLane(targetLane);
+      return;
+    }
+    else if (CarriageManager.instance.IsLanePositionFree(altPos, bot, 0.4f))
+    {
+      bot.ChangeLane(altLane);
+      return;
+    }
+    bot.ChangeLane(targetLane, true);
   }
 
   public static CarriageBot.ProgressState SetTransformFromProgress(Transform car, float progress, float lanePosition)
