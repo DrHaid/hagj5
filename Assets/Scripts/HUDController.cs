@@ -17,9 +17,11 @@ public class HUDController : MonoBehaviour
 
   private Vector3 lastPos = Vector3.zero;
 
+  private int lastLifeCount = 3;
   private bool gameOver;
   private bool gameWon;
   private bool showEnter;
+
 
   private void Update()
   {
@@ -42,7 +44,13 @@ public class HUDController : MonoBehaviour
       speed = RoundDown(speed);
       Speed.text = $"Speed: {speed} km/h";
       lastPos = CarController.instance.gameObject.transform.position;
-      Lives.text = $"Lives: {CarController.instance.Lives}";
+      if(lastLifeCount != CarController.instance.Lives)
+      {
+        Lives.text = $"Lives: {CarController.instance.Lives}";
+        var anim = Lives.transform.GetComponent<Animator>();
+        anim.SetTrigger("BlinkLives");
+        lastLifeCount = CarController.instance.Lives;
+      }
     }
 
     if (CarController.instance.CarStopped)

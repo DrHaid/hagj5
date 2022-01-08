@@ -34,13 +34,13 @@ public class CarriageManager : MonoBehaviour
     {
       if (Random.value > SpawnRate)
       {
-        break; // HACK: break is right. trust me. not right like correct, but continue makes carriages spawn in one line at the last segment
+        continue;
       }
 
       var noise = Mathf.PerlinNoise(0, Mathf.Repeat(RoadGeneration.instance.roadSegments.Count, noiseLength) / noiseLength * 100);
       if (noise > 0.5f)
       {
-        SpawnCarriage();
+        SpawnCarriage(i);
       }
     }
     lastSegmentIndex = RoadGeneration.instance.roadSegments.Count;
@@ -58,12 +58,12 @@ public class CarriageManager : MonoBehaviour
   }
 
   [ContextMenu("Spawn Carriage")]
-  public void SpawnCarriage()
+  public void SpawnCarriage(int startingIndex)
   {
     var index = Random.Range(0, CarriagePrefabs.Count);
     var carriage = Instantiate(CarriagePrefabs[index]);
     var bot = carriage.GetComponent<CarriageBot>();
-    bot.InitBot(Random.Range(MinSpeed, MaxSpeed), Random.Range(0, RoadGeneration.instance.laneCount));
+    bot.InitBot(Random.Range(MinSpeed, MaxSpeed), startingIndex, Random.Range(0, RoadGeneration.instance.laneCount));
     var color = Random.Range(0, CarriageColors.Count);
     var sprite = carriage.transform.GetChild(0);
     sprite.GetChild(0).GetComponent<SpriteRenderer>().color

@@ -890,7 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segmentIndex: 0
-  segmentCount: 300
+  segmentCount: 200
   laneCount: 5
   laneWidth: 0.6
   segmentLength: 0.3
@@ -1858,6 +1858,7 @@ GameObject:
   - component: {fileID: 1110238445}
   - component: {fileID: 1110238447}
   - component: {fileID: 1110238446}
+  - component: {fileID: 1110238448}
   m_Layer: 5
   m_Name: Lives
   m_TagString: Untagged
@@ -1981,6 +1982,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110238444}
   m_CullTransparentMesh: 1
+--- !u!95 &1110238448
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110238444}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 503886138c0c87542a99f4f0c2075cb5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1154982851
 GameObject:
   m_ObjectHideFlags: 0

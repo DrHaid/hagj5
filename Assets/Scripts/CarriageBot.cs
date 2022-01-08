@@ -61,7 +61,7 @@ public class CarriageBot : MonoBehaviour
     Progress += Time.fixedDeltaTime * Speed;
   }
 
-  public void InitBot(float speed, int startingLane)
+  public void InitBot(float speed, int startingIndex, int startingLane)
   {
     State = ProgressState.LEVEL;
     Speed = speed;

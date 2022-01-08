@@ -81,6 +81,7 @@ public class CarController : MonoBehaviour
     if (IsLanePositionOffroad(LanePosition))
     {
       CarBroke = true;
+      Lives = 0;
     }
     if (actualDistance == RoadGeneration.pforzheimDistance - 50)
     {
