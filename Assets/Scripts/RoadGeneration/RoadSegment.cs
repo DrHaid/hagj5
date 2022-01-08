@@ -29,4 +29,14 @@ public class RoadSegment
     vertices.Add(b);
     vertices.Add(a);
   }
+
+  public GameObject GetViewBlockPlaceholder()
+  {
+    var viewBlock = new GameObject();
+    viewBlock.transform.position = position;
+    var lookDir = direction;
+    lookDir.y = 0;
+    viewBlock.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
+    return viewBlock;
+  }
 }

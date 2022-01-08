@@ -19,6 +19,8 @@ public class RoadGeneration : MonoBehaviour
   public CurveSettings curveSettings;
   public SlopeSettings slopeSettings;
 
+  public GameObject viewBlockPrefab;
+
   private Curve currentCurve;
   private Slope currentSlope;
 
@@ -66,8 +68,15 @@ public class RoadGeneration : MonoBehaviour
         continue;
       }
       var prevSeg = roadSegments[i - 1];
-      
-      roadSegments.Add(new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction), laneWidth * laneCount, segmentLength));
+
+      bool viewBlockNeeded;
+      var segment = new RoadSegment(prevSeg, ApplyCurvature(prevSeg.direction, out viewBlockNeeded), laneWidth * laneCount, segmentLength);
+      if (viewBlockNeeded)
+      {
+        var placeHolder = segment.GetViewBlockPlaceholder();
+        Instantiate(viewBlockPrefab, placeHolder.transform.position, placeHolder.transform.rotation, gameObject.transform);
+      }
+      roadSegments.Add(segment);
     }
   }
 
@@ -112,8 +121,10 @@ public class RoadGeneration : MonoBehaviour
     return uvs.ToArray();
   }
 
-  public Vector3 ApplyCurvature(Vector3 direction)
+  public Vector3 ApplyCurvature(Vector3 direction, out bool viewBlockNeeded)
   {
+    viewBlockNeeded = false;
+
     // choose either curve or slope
     if (currentCurve == null && currentSlope == null)
     {
@@ -124,6 +135,10 @@ public class RoadGeneration : MonoBehaviour
       else if (Random.value <= slopeSettings.Chance)
       {
         currentSlope = new Slope(slopeSettings);
+        if (!currentSlope.Positive)
+        {
+          viewBlockNeeded = true;
+        }
       }
     }
 
@@ -159,10 +174,14 @@ public class RoadGeneration : MonoBehaviour
 
       if (!currentSlope.DoSlope(segmentLength))
       {
+        if (currentSlope.Positive)
+        {
+          viewBlockNeeded = true;
+        }
         currentSlope = null;
       }
     }
-    
+ 
     return direction;
   }
 

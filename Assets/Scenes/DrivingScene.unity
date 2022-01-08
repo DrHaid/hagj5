@@ -897,6 +897,7 @@ MonoBehaviour:
   roadMeshFilter: {fileID: 0}
   curveSettings: {fileID: 11400000, guid: f64b6e677e7ddc34bba87288e4020183, type: 2}
   slopeSettings: {fileID: 11400000, guid: 8f512881070f7cd43a81b492a596925e, type: 2}
+  viewBlockPrefab: {fileID: 2117923209104576942, guid: 29c97619d1b7b6341988dbd84bbf3b00, type: 3}
 --- !u!4 &352945323
 Transform:
   m_ObjectHideFlags: 0

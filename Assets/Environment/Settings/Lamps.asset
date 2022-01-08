@@ -15,8 +15,8 @@ MonoBehaviour:
   Type: 2
   Exclusive: 0
   Weight: 3
-  MinRange: 10
-  MaxRange: 30
+  MinRange: 3
+  MaxRange: 50
   GapSize: 5
   Prefabs:
   - {fileID: 2869312735987483716, guid: 828835e7748ed524a8312ba87f657b77, type: 3}
