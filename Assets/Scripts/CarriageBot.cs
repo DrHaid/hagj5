@@ -100,14 +100,37 @@ public class CarriageBot : MonoBehaviour
 
   public void ChangeLaneRoutine()
   {
-    var newLane = GetCurrentLaneIndex() + (Random.value > 0.5f ? 1 : -1);
+    int targetIndex;
+    bool slowDown;
+    var rand = Random.value > 0.5f;
+    var newLane = GetCurrentLaneIndex() + (rand ? 1 : -1);
+    var altLane = GetCurrentLaneIndex() + (!rand ? 1 : -1);
     if (newLane >= 0 && newLane < RoadGeneration.instance.laneCount)
     {
+      targetIndex = newLane;
       var lanePos = GetLanePosition(newLane);
       if (CarriageManager.instance.IsLanePositionFree(lanePos, this, 0.4f))
       {
-        ChangeLane(newLane);
+        slowDown = false;
+      }
+      else
+      {
+        slowDown = true;
       }
     }
+    else
+    {
+      targetIndex = altLane;
+      var lanePos = GetLanePosition(altLane);
+      if (CarriageManager.instance.IsLanePositionFree(lanePos, this, 0.4f))
+      {
+        slowDown = false;
+      }
+      else
+      {
+        slowDown = true;
+      }
+    }
+    ChangeLane(targetIndex, slowDown);
   }
 }
